@@ -1,0 +1,258 @@
+﻿<Window x:Class="UpdateBook"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Library.UI"
+        xmlns:service="clr-namespace:Library.UI.Services.Implementation"
+        mc:Ignorable="d"
+        Title="UpdateBook" Height="550" Width="700" AllowsTransparency="True" WindowStyle="None" Background="Transparent">
+    <Grid>
+        <Canvas>
+            <Label MouseLeftButtonDown="DragMove" Content="KİTAP GÜNCELLEME PENCERESİ" Canvas.Left="193" Canvas.Top="71" Width="275" Panel.ZIndex="3" FontFamily="Comic Sans MS" FontSize="16" FontWeight="Bold" Foreground="#FFF9F9F9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Rectangle MouseLeftButtonDown="DragMove" x:Name="addBookMove" Fill="Chocolate" Height="30" Width="440" Canvas.Left="130" Canvas.Top="70" HorizontalAlignment="Center" VerticalAlignment="Top" Panel.ZIndex="2"/>
+            <Border  Height="450" Width="440" Canvas.Left="130" Canvas.Top="100" Background="#f9f9f9" CornerRadius="0,0,50,50" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Border.Effect>
+                    <DropShadowEffect Opacity="0.35" Direction="275"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="60"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="107*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="110*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Grid.Row="0" BorderBrush="#f0e9d9" BorderThickness="0,0,0,1" Grid.ColumnSpan="2">
+                        <Label Content="Kitap Adı :" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="Comic Sans MS" Foreground="#FF37251C" FontWeight="Bold" />
+
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="1" BorderBrush="#f0e9d9" BorderThickness="0,0,0,1" Grid.ColumnSpan="2">
+                        <Label Content="Yazar:" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="Comic Sans MS" Foreground="#FF37251C" FontWeight="Bold" />
+
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="2" BorderBrush="#f0e9d9" BorderThickness="0,0,0,1" Grid.ColumnSpan="2">
+                        <Label Content="Sayfa :" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="Comic Sans MS" Foreground="#FF37251C" FontWeight="Bold" />
+
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="3" BorderBrush="#f0e9d9" BorderThickness="0,0,0,1" Grid.ColumnSpan="2">
+                        <Label Content="Çıkış Tarihi :" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="Comic Sans MS" Foreground="#FF37251C" FontWeight="Bold" />
+
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="4" BorderBrush="#f0e9d9" BorderThickness="0,0,0,1" Grid.ColumnSpan="2">
+                        <Label Content="Okundu mu? :" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="Comic Sans MS" Foreground="#FF37251C" FontWeight="Bold" />
+
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="5" BorderBrush="#f0e9d9" BorderThickness="0,0,0,1" Grid.ColumnSpan="2">
+                        <Label Content="Kategori :" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="Comic Sans MS" Foreground="#FF37251C" FontWeight="Bold"/>
+
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="6" BorderBrush="#f0e9d9" BorderThickness="0,0,0,1" Grid.ColumnSpan="2">
+                        <Label Content="Yayınevi :" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="Comic Sans MS" Foreground="#FF37251C" FontWeight="Bold" />
+
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="7" Grid.RowSpan="3" BorderBrush="#f0e9d9" BorderThickness="0,0,0,0" Grid.ColumnSpan="2">
+                        <Label Content="Detaylar :" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" FontFamily="Comic Sans MS" Foreground="#FF37251C" FontWeight="Bold" Padding="10"/>
+
+                    </Border>
+
+                    <Image Grid.Column="0" Grid.Row="10" Margin="10,10,4,10" Source="/Img/Close.png"  MouseDown="closeWindow_MouseDown" Cursor="Hand" Style="{DynamicResource imageButton}">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1"/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+
+                    <Border Grid.Column="2" Grid.Row="0">
+                        <TextBox x:Name="tbxBookName"  TextWrapping="Wrap" Background="#99F9F9F9" FontFamily="Comic Sans MS" BorderBrush="#f0e9d9" BorderThickness="1,1,1,1"
+                                FontSize="16" Foreground="#FF37251C" FontWeight="Bold" Padding="2"
+                                 Text="{Binding BookName, Mode=TwoWay}" />
+                    </Border>
+                    <Border Grid.Column="2" Grid.Row="1">
+
+                        <Grid>
+                            <Grid x:Name="grdAuthorLabel" Visibility="Visible">
+                                <Label x:Name="cbxAuthorLabel" Background="#99F9F9F9" FontFamily="Comic Sans MS" BorderBrush="#f0e9d9" BorderThickness="1,1,0,1"
+                                        FontSize="16" Foreground="#FF37251C" FontWeight="Bold" Padding="2,5" Width="220" HorizontalAlignment="Left" MouseDown="cbxAuthorLabel_MouseDown">
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding AuthorFirstName}" />
+                                        <TextBlock Text=" " />
+                                        <TextBlock Text="{Binding AuthorLastName}" />
+                                    </StackPanel>
+                                </Label>
+                            </Grid>
+                            <Grid x:Name="grdAuthorID" Visibility="Collapsed">
+                                <Grid.DataContext>
+                                    <service:AuthorServices/>
+                                </Grid.DataContext>
+                                <ComboBox x:Name="cbxAuthor" Background="#FFF9F9F9" FontFamily="Comic Sans MS" BorderBrush="#f0e9d9" BorderThickness="1,0,1,1"
+                                            FontSize="16" Foreground="#FF37251C" FontWeight="Bold" Padding="5,8,5,5"
+                                            ItemsSource="{Binding AllAuthorsList}"
+                                            SelectedIndex="0"
+                                            SelectedValue="Id" 
+                                            IsSynchronizedWithCurrentItem="True" 
+                                            SelectedItem="{Binding AuthorId, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">
+
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding FirstName}" />
+                                                <TextBlock Text=" " />
+                                                <TextBlock Text="{Binding LastName}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Column="2" Grid.Row="2">
+                        <TextBox x:Name="tbxPage" TextWrapping="Wrap" Background="#99F9F9F9" FontFamily="Comic Sans MS" BorderBrush="#f0e9d9" BorderThickness="1,1,1,1"
+                                    FontSize="16" Foreground="#FF37251C" FontWeight="Bold" Padding="2"
+                                    Text="{Binding Page, Mode=TwoWay}" PreviewTextInput="TextBox_PreviewTextInput"/>
+
+
+                    </Border>
+                    <Border Grid.Column="2" Grid.Row="3">
+                        <Grid>
+                            <Grid x:Name="grdAuthorIntDate" Visibility="Visible" >
+                                <Label x:Name="tbxAuthorIntDate" Background="#99F9F9F9" FontFamily="Comic Sans MS" BorderBrush="#f0e9d9" BorderThickness="1,1,1,1"
+                                        FontSize="16" Foreground="#FF37251C" FontWeight="Bold" Padding="2,5" Width="220"  HorizontalAlignment="Left" MouseDown="tbxAuthorIntDate_MouseDown"
+                                        Content="{Binding IntDate, Mode=TwoWay}" />
+                            </Grid>
+                            <Grid x:Name="grdAuthor" Visibility="Collapsed">
+                                <Grid.DataContext>
+                                    <service:YearServices/>
+                                </Grid.DataContext>
+                                <StackPanel Orientation="Horizontal" >
+                                    <RadioButton x:Name="rdbMO" Content="MÖ" GroupName="Options" Checked="RadioButton_Checked" Background="#FFF9F9F9" FontFamily="Comic Sans MS" BorderBrush="OrangeRed" BorderThickness="1" 
+                         FontSize="16" Foreground="#FF37251C" FontWeight="Bold" VerticalAlignment="Center" Margin="30,2,0,0"  IsChecked="{Binding Option1}" VerticalContentAlignment="Center" Visibility="Hidden"/>
+                                    <RadioButton x:Name="rdbMS" Content="MS" GroupName="Options" Checked="RadioButton_Checked" Background="#FFF9F9F9" FontFamily="Comic Sans MS" BorderBrush="OrangeRed" BorderThickness="1" 
+                         FontSize="16" Foreground="#FF37251C" FontWeight="Bold" VerticalAlignment="Center" Margin="50,2,0,0" IsChecked="{Binding Option2}" VerticalContentAlignment="Center" Visibility="Hidden"/>
+                                </StackPanel>
+
+
+                                <ComboBox x:Name="cbxMOMS"  Background="#FFF9F9F9" FontFamily="Comic Sans MS" BorderBrush="#f0e9d9" BorderThickness="1,0,1,1" Visibility="Collapsed"
+                         FontSize="16" Foreground="#FF37251C" FontWeight="Bold" Padding="20,10" 
+                                      SelectedIndex="0" SelectedItem="{Binding YY, Mode=OneWay}"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0"  Source="/Img/back.png"  x:Name="back" Width="30" Height="auto" MouseDown="back_MouseDown" Style="{DynamicResource imageButton}"  Visibility="Collapsed">
+                                        <Image.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleX="1"/>
+                                                <SkewTransform/>
+                                                <RotateTransform/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </Image.RenderTransform>
+                                    </Image>
+                                    <ComboBox x:Name="cbxAuthorIntDate" Grid.Column="1"  Background="#FFF9F9F9" FontFamily="Comic Sans MS" BorderBrush="#f0e9d9" BorderThickness="1,0,1,1" Visibility="Collapsed" 
+                                            FontSize="16" Foreground="#FF37251C" FontWeight="Bold" Padding="20,10"
+                                            SelectedIndex="0"
+                                            SelectedValue="Id" DisplayMemberPath="IntDate"
+                                            IsSynchronizedWithCurrentItem="True"
+                                            SelectedItem="{Binding IntDate, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Column="2" Grid.Row="4" BorderBrush="#FFF0E9D9" BorderThickness="1,1,1,1">
+                        <CheckBox x:Name="chcbIsRead" IsChecked="{Binding IsRead}" VerticalAlignment="Center"
+          Background="#FFF0E9D9" 
+          BorderBrush="#FF37251C" 
+          BorderThickness="2,2,2,2" 
+          FontFamily="Comic Sans MS" 
+          HorizontalAlignment="Center" />
+
+                    </Border>
+                    <Border Grid.Column="2" Grid.Row="5">
+                        <Grid>
+                            <Grid x:Name="grdCategoryLabel" Visibility="Visible">
+                                <Label x:Name="cbxCategoryLabel" Background="#99F9F9F9" FontFamily="Comic Sans MS" BorderBrush="#f0e9d9" BorderThickness="1,1,0,1"
+                                        FontSize="16" Foreground="#FF37251C" FontWeight="Bold" Padding="2,5" Width="220" HorizontalAlignment="Left" MouseDown="cbxCategoryLabel_MouseDown"
+                                        Content="{Binding CategoryName, Mode=TwoWay}" />
+                            </Grid>
+                            <Grid x:Name="grdCategory" Visibility="Collapsed">
+                                <Grid.DataContext>
+                                    <service:CategoryServices/>
+                                </Grid.DataContext>
+                                <ComboBox  x:Name="cbxCategory" Background="#FFF9F9F9" FontFamily="Comic Sans MS" BorderBrush="#f0e9d9" BorderThickness="1,0,1,1"
+                                            FontSize="16" Foreground="#FF37251C" FontWeight="Bold" Padding="5,8,5,5"
+                                   ItemsSource="{Binding AllCategoryList}"
+                                   SelectedIndex="0"
+                                   SelectedValue="Id" DisplayMemberPath="Name"
+                                   IsSynchronizedWithCurrentItem="True" 
+                                   SelectedItem="{Binding CategoryId, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Column="2" Grid.Row="6">
+                        <Grid>
+                            <Grid x:Name="grdPublisherLabel" Visibility="Visible">
+                                <Label x:Name="cbxPublisherLabel" Background="#99F9F9F9" FontFamily="Comic Sans MS" BorderBrush="#f0e9d9" BorderThickness="1,1,0,1"
+                                        FontSize="16" Foreground="#FF37251C" FontWeight="Bold" Padding="2,5" Width="220" HorizontalAlignment="Left" MouseDown="cbxPublisherLabel_MouseDown"
+                                        Content="{Binding PublisherName, Mode=TwoWay}" />
+                            </Grid>
+                            <Grid x:Name="grdPublisher" Visibility="Collapsed">
+                                <Grid.DataContext>
+                                    <service:PublisherServices/>
+                                </Grid.DataContext>
+                                <ComboBox  x:Name="cbxPublisher" Background="#FFF9F9F9" FontFamily="Comic Sans MS" BorderBrush="#f0e9d9" BorderThickness="1,0,1,1"
+                                            FontSize="16" Foreground="#FF37251C" FontWeight="Bold" Padding="5,8,5,5"
+                                   ItemsSource="{Binding AllPublisherList}"
+                                   SelectedIndex="0"
+                                   SelectedValue="Id" DisplayMemberPath="Name"
+                                   IsSynchronizedWithCurrentItem="True" 
+                                   SelectedItem="{Binding PublisherId, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Column="2" Grid.Row="7" Grid.RowSpan="3">
+                        <TextBox x:Name="tbxDetail" TextWrapping="Wrap" Background="#99F9F9F9" FontFamily="Comic Sans MS" BorderBrush="#f0e9d9" BorderThickness="1,1,1,1"
+                                    FontSize="16" Foreground="#FF37251C" FontWeight="Bold" Padding="2"
+                                     Text="{Binding Detail, Mode=TwoWay}" />
+                    </Border>
+                    <Button Grid.Column="2" Grid.Row="10" Margin="10,10,10,10" BorderBrush="#00ABABAB" Cursor="Hand" Click="btnUpdate_Click">
+                        <Button.Background>
+                            <ImageBrush ImageSource="/Img/updateBook.png"/>
+                        </Button.Background>
+                    </Button>
+                    <Label x:Name="lblRadioButtonValue" Visibility="Hidden"/>
+                </Grid>
+            </Border>
+            <Ellipse MouseLeftButtonDown="DragMove" Height="90" Width="90" Canvas.Left="85" Canvas.Top="25" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="3" StrokeThickness="35">
+                <Ellipse.Effect>
+                    <DropShadowEffect/>
+                </Ellipse.Effect>
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="/Img/book.png"/>
+                </Ellipse.Fill>
+
+            </Ellipse>
+        </Canvas>
+    </Grid>
+</Window>

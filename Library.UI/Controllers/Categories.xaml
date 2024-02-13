@@ -3,38 +3,117 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SarmanLibrary.UI"
+             xmlns:local="clr-namespace:Library.UI"
+             xmlns:service="clr-namespace:Library.UI.Services.Implementation"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <Border  Grid.Row="0">
-            <DataGrid BorderBrush="{x:Null}" BorderThickness="0"/>
+            <ListView x:Name="lstCategory" ItemsSource="{Binding AllCategoryList}" SelectionMode="Single" FontFamily="Comic Sans MS" FontSize="16" FontWeight="Bold"
+                              Background="Transparent" BorderBrush="Transparent">
+
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="0">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock HorizontalAlignment="Right" Text="{Binding Id}" Visibility="Hidden"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Kategori Adı" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock HorizontalAlignment="Right" Text="{Binding Name}"  />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn  Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Label x:Name="lblUpdateCategory"  Style="{DynamicResource ListLabelButton}" Width="170" PreviewMouseDown="lblUpdateCategory_PreviewMouseDown">
+                                            <Image Source="/Img/updateCategory.png"  Style="{DynamicResource imageButton}" Width="150">
+                                                <Image.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1"/>
+                                                        <SkewTransform/>
+                                                        <RotateTransform/>
+                                                        <TranslateTransform/>
+                                                    </TransformGroup>
+                                                </Image.RenderTransform>
+                                            </Image>
+                                        </Label>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn  Width="120">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Label x:Name="lblCategoryBookList" Content="Kitap Listesi"   Style="{DynamicResource ListLabelButton}" Width="120" PreviewMouseDown="lblCategoryBookList_PreviewMouseDown"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Label x:Name="DeleteCategory"  PreviewMouseDown="DeleteCategory_PreviewMouseDown"
+                                                   Width="60"
+                                                   VerticalAlignment="Center"
+                                                   Background="#f15662"
+                                                   BorderThickness="0"
+                                                   Content="Sil"
+                                                   Foreground="White" 
+                                                   Padding="20,0,0,0"
+                                                   Cursor="Hand">
+                                        <Label.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleX="1"/>
+                                                <SkewTransform/>
+                                                <RotateTransform/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </Label.RenderTransform>
+
+                                    </Label>
+                                </DataTemplate>
+
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
         </Border>
         <Grid Grid.Row="1" Background="#f9f9f9">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <DockPanel />
-            <DockPanel Grid.Column="1">
-                <Button x:Name="addCategory" Click="addCategory_Click" Height="40" Width="200" Cursor="Hand">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/Controllers/addCategory.png"/>
-                    </Button.Background>
-                    <Button.RenderTransform>
+            <DockPanel Grid.Column="2">
+                <Image x:Name="AddCategory" Source="/Img/addCategory.png"  MouseDown="addCategory_Click" Style="{DynamicResource imageButton}">
+                    <Image.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform ScaleX="1"/>
                             <SkewTransform/>
                             <RotateTransform/>
                             <TranslateTransform/>
                         </TransformGroup>
-                    </Button.RenderTransform>
-                   
-                </Button>
+                    </Image.RenderTransform>
+
+                </Image>
             </DockPanel>
 
 

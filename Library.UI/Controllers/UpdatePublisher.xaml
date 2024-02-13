@@ -3,19 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SarmanLibrary.UI"
+        xmlns:local="clr-namespace:Library.UI"
         mc:Ignorable="d"
-        Title="UpdatePublisher" Height="350" Width="700" AllowsTransparency="True" WindowStyle="None" Background="#f0e9d9">
+        Title="UpdatePublisher" Height="350" Width="700" AllowsTransparency="True" WindowStyle="None" Background="Transparent">
     <Grid>
         <Canvas>
             <Label Content="YAYINEVİ GÜNCELLEME PENCERESİ" Canvas.Left="193" Canvas.Top="71" Width="304" Panel.ZIndex="3" FontFamily="Comic Sans MS" FontSize="16" FontWeight="Bold" Foreground="#FFF9F9F9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Rectangle Fill="Chocolate" Height="30" Width="440" Canvas.Left="130" Canvas.Top="70" HorizontalAlignment="Center" VerticalAlignment="Top" Panel.ZIndex="2"/>
-            <Border  Height="159" Width="440" Canvas.Left="130" Canvas.Top="100" Background="#f9f9f9" CornerRadius="0,0,50,50" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Border  Height="209" Width="440" Canvas.Left="130" Canvas.Top="100" Background="#f9f9f9" CornerRadius="0,0,50,50" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Effect>
                     <DropShadowEffect Opacity="0.35" Direction="275"/>
                 </Border.Effect>
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition Height="60"/>
@@ -28,36 +29,51 @@
                         <Label Content="Yayınevi Adı :" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="Comic Sans MS" Foreground="#FF37251C" FontWeight="Bold" />
 
                     </Border>
+                    <Label x:Name="lblSelectedModelId" Content="{Binding Id}" Visibility="Hidden"/>
                     <Border Grid.Column="0" Grid.Row="1" BorderBrush="#f0e9d9" BorderThickness="0,0,0,1">
                         <Label Content="Detaylar :" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="Comic Sans MS" Foreground="#FF37251C" FontWeight="Bold" />
 
                     </Border>
-                    <Button Grid.Column="0" Grid.Row="4" Margin="10,10,10,10" BorderBrush="#00ABABAB" Cursor="Hand">
-                        <Button.Background>
-                            <ImageBrush ImageSource="/Controllers/Close.png"/>
-                        </Button.Background>
-                    </Button>
 
-
+                    <Image Grid.Column="0" Grid.Row="4" x:Name="CloseWindow"  Margin="10,10,10,10" Source="/Img/Close.png" Cursor="Hand"  MouseDown="CloseWindow_Click" Style="{DynamicResource imageButton}">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1"/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
 
                     <Border Grid.Column="1" Grid.Row="0">
-                        <TextBox TextWrapping="Wrap" Background="#99F9F9F9" FontFamily="Comic Sans MS" Text="" BorderBrush="#f0e9d9" BorderThickness="1,1,1,1"/>
+                        <TextBox x:Name="tbxSelectedModelPublisherName" TextWrapping="Wrap" Background="#99F9F9F9" FontFamily="Comic Sans MS" BorderBrush="Transparent" BorderThickness="1,1,1,1"
+                                 Foreground="#FF37251C" FontWeight="Bold" Padding="40,10" FontSize="16"
+                                 Text="{Binding Name, Mode=TwoWay}" />
                     </Border>
-                    <Border Grid.Column="1" Grid.Row="1">
-                        <TextBox TextWrapping="Wrap" Background="#99F9F9F9" FontFamily="Comic Sans MS" Text="" BorderBrush="#f0e9d9" BorderThickness="1,1,1,1"/>
+                    <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="2">
+                        <TextBox TextWrapping="Wrap" Background="#99F9F9F9" FontFamily="Comic Sans MS" BorderBrush="#f0e9d9" BorderThickness="1,1,1,1"
+                                 FontSize="16" Foreground="#FF37251C" FontWeight="Bold" Padding="40,10"
+                                 x:Name="tbxSelectedModelPublisherDescription"  Text="{Binding Description, Mode=TwoWay}" />
                     </Border>
 
-                    <Button Grid.Column="1" Grid.Row="2" Margin="10,10,10,10" BorderBrush="#00ABABAB" Cursor="Hand">
-                        <Button.Background>
-                            <ImageBrush ImageSource="/Controllers/updateThePublisher.png"/>
-                        </Button.Background>
-                    </Button>
+                    <Image  Grid.Column="1" Grid.Row="3"  Margin="10,10,10,10" Source="/Img/updateThePublisher.png"  Cursor="Hand" MouseDown="btnUpdate_Click" Style="{DynamicResource imageButton}">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1"/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+
 
                 </Grid>
             </Border>
             <Ellipse Height="90" Width="90" Canvas.Left="85" Canvas.Top="25" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="3" StrokeThickness="35">
                 <Ellipse.Fill>
-                    <ImageBrush ImageSource="/Controllers/author.png"/>
+                    <ImageBrush ImageSource="/Img/author.png"/>
                 </Ellipse.Fill>
                 <Ellipse.Effect>
                     <DropShadowEffect/>

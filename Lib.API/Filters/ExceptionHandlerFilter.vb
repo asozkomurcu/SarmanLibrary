@@ -1,4 +1,5 @@
 ﻿Imports [Lib].Application
+Imports [Lib].Application.Wrapper
 Imports Microsoft.AspNetCore.Mvc
 Imports Microsoft.AspNetCore.Mvc.Filters
 

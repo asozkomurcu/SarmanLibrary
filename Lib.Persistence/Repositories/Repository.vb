@@ -1,5 +1,6 @@
 ﻿Imports System.Linq.Expressions
 Imports [Lib].Domain
+Imports [Lib].Persistence.Context
 Imports Microsoft.EntityFrameworkCore
 
 Public Class Repository(Of T As BaseEntity)

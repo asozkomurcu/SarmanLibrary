@@ -1,27 +1,34 @@
 ﻿Imports AutoMapper
-Imports [Lib].Application
+Imports [Lib].Application.Models.RequestModels
+Imports [Lib].Application.Models.RequestModels.AuthorVMs
+Imports [Lib].Application.Models.RequestModels.BookVMs
+Imports [Lib].Application.Models.RequestModels.CategoryVMs
+Imports [Lib].Application.Models.RequestModels.PublisherVMs
 Imports [Lib].Domain
+Imports [Lib].Domain.Entities
 
-Public Class ViewModelToDomain
-    Inherits Profile
-    Public Sub New()
-        'Author
-        CreateMap(Of AddAuthorVM, Author)()
-        CreateMap(Of UpdateAuthorVM, Author)()
-
-
-        'Book
-        CreateMap(Of AddBookVM, Book)()
-        CreateMap(Of UpdateBookVM, Book)()
+Namespace AutoMapper
+    Public Class ViewModelToDomain
+        Inherits Profile
+        Public Sub New()
+            'Author
+            CreateMap(Of AddAuthorVM, Author)()
+            CreateMap(Of UpdateVM, Author)()
 
 
-        'Category
-        CreateMap(Of CreateCategoryVM, Category)()
-        CreateMap(Of UpdateCategoryVM, Category)()
+            'Book
+            CreateMap(Of AddBookVM, Book)()
+            CreateMap(Of UpdateVM, Book)()
 
 
-        'Publisher
-        CreateMap(Of AddPublisherVM, Publisher)()
-        CreateMap(Of UpdatePublisherVM, Publisher)()
-    End Sub
-End Class
+            'Category
+            CreateMap(Of CreateCategoryVM, Category)()
+            CreateMap(Of UpdateVM, Category)()
+
+
+            'Publisher
+            CreateMap(Of AddPublisherVM, Publisher)()
+            CreateMap(Of UpdateVM, Publisher)()
+        End Sub
+    End Class
+End Namespace

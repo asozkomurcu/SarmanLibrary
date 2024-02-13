@@ -3,43 +3,44 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SarmanLibrary.UI"
+             xmlns:local="clr-namespace:Library.UI"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="700">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
         <Border
-        
-    Grid.Row="0"
-    Margin="5,5,5,5"
-    Padding="10"
-    Background="white"
-    CornerRadius="10">
+            Grid.Row="0"
+            Margin="5,5,5,5"
+            Padding="10"
+            Background="white"
+            CornerRadius="10">
 
-
-            <DataGrid x:Name="dtGridTeacher"
-        xmlns:my="http://schemas.microsoft.com/wpf/2008/toolkit"
-        AutoGenerateColumns="False"
-        Background="white"
-        BorderThickness="0"
-        CanUserAddRows="False"
-        ColumnWidth="*"
-        GridLinesVisibility="None"
-        HeadersVisibility="Column"
-        RowHeaderWidth="0"
-        ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <DataGrid x:Name="dtGridTeacher" ItemsSource="{Binding AllBooksList}" 
+                      SelectedItem="{Binding SelectedBookItem}" SelectionMode="Single" CanUserDeleteRows="False" IsReadOnly="True" 
+                      xmlns:my="http://schemas.microsoft.com/wpf/2008/toolkit"
+                      AutoGenerateColumns="False"
+                      Background="white"
+                      BorderThickness="0"
+                      CanUserAddRows="False"
+                      ColumnWidth="*"
+                      GridLinesVisibility="None"
+                      HeadersVisibility="Column"
+                      RowHeaderWidth="0"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      RowDetailsVisibilityMode="VisibleWhenSelected">
                 <DataGrid.ColumnHeaderStyle>
 
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="Background" Value="White" />
                         <Setter Property="Foreground" Value="Black" />
-                        <Setter Property="Padding" Value="5,5,5,5" />
+                        <Setter Property="Padding" Value="15,5,5,5" />
                         <Setter Property="FontFamily" Value="Montserrat" />
-                        <Setter Property="FontSize" Value="15" />
+                        <Setter Property="FontSize" Value="19"/>
+                        <Setter Property="FontWeight" Value="Bold" />
                     </Style>
 
                 </DataGrid.ColumnHeaderStyle>
@@ -47,16 +48,24 @@
                     <Style TargetType="DataGridRow" >
                         <Setter Property="Background" Value="Transparent" />
                         <Setter Property="Margin" Value="10,2,0,10" />
+
                         <!--  Satır arka plan rengi  -->
+
                         <Setter Property="Foreground" Value="#121F2C" />
 
+
                         <!--  Satır metin rengi  -->
+
                         <Style.Triggers>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="Background" Value="Transparent" />
+
                                 <!--  Seçili satır arka plan rengi  -->
+
                                 <Setter Property="Foreground" Value="White" />
+
                                 <!--  Seçili satır metin rengi  -->
+
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -64,48 +73,77 @@
 
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Id}" Header="ID" IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding BookName}" Header="Ad" IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding Page}" Header="Soyad"  IsReadOnly="True"  />
-                    <DataGridTextColumn Binding="{Binding ReleaseDateId}" Header="Telefon" IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding CategoryId}" Header="Yaş" IsReadOnly="True"  />
-                    <DataGridTextColumn Binding="{Binding BranchName}" Header="Branş" IsReadOnly="True" />
-
+                    <DataGridTextColumn x:Name="AuthorId" Header="Id" Binding="{Binding Id}" Width="3*" FontSize="16" FontWeight="Bold" Visibility="Hidden"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Kitap Adı" Binding="{Binding BookName}" Width="3*" FontSize="16" FontWeight="Bold"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Yazar Adı" Binding="{Binding AuthorFirstName}" Width="2*" FontSize="16" FontWeight="Bold"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Yazar Soyadı" Binding="{Binding AuthorLastName}" Width="2*" FontSize="16" FontWeight="Bold"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Kategori" Binding="{Binding CategoryName}" Width="2*" FontSize="16" FontWeight="Bold"></DataGridTextColumn>
 
                     <DataGridTemplateColumn>
 
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button
-                            Width="60"
-                            Background="#f15662"
-                            BorderThickness="0"
-                            Click="btn_DeleteClick"
-                            Content="Sil"
-                            Foreground="White" />
+                                <Label x:Name="btnDeleteBook"  PreviewMouseDown="DeleteBook_PreviewMouseDown"
+                                         Width="60"
+                                         VerticalAlignment="Center"
+                                         Background="#f15662"
+                                         BorderThickness="0"
+                                         Content="Sil"
+                                         Foreground="White" 
+                                         Padding="20,0,0,0"
+                                         Cursor="Hand">
+                                    <Label.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Label.RenderTransform>
+
+                                </Label>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
 
                     </DataGridTemplateColumn>
-                    <!--<DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button
-                            Width="60"
-                            Background="#dfcfb7"
-                            BorderThickness="0"
-                            Click="btn_EditClick"
-                            Content="Güncelle"
-                            Foreground="White" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>-->
-
-
 
                 </DataGrid.Columns>
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="0" Background="BlanchedAlmond" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="100"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" FontSize="16" Foreground="MidnightBlue" Text="Sayfa Sayısı" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Margin="10,5,5,5"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" FontSize="16" Foreground="MidnightBlue" Text=" : " FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Width="10" Margin="0,5"/>
+                                <TextBlock Grid.Row="0" Grid.Column="2" FontSize="16" Foreground="MidnightBlue" Text="{Binding Page}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Margin="10,5,5,5"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Foreground="MidnightBlue" Text="Yayın Evi" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Margin="10,5,5,5"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" FontSize="16" Foreground="MidnightBlue" Text=" : " FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Width="10" Margin="0,5"/>
+                                <TextBlock Grid.Row="1" Grid.Column="2" FontSize="16" Foreground="MidnightBlue" Text="{Binding PublisherName}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="200" Margin="10,5,5,5"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" FontSize="16" Foreground="MidnightBlue" Text="Yayın Yılı" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Margin="10,5,5,5"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" FontSize="16" Foreground="MidnightBlue" Text=" : " FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Width="10" Margin="0,5"/>
+                                <TextBlock Grid.Row="2" Grid.Column="2" FontSize="16" Foreground="MidnightBlue" Text="{Binding IntDate}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Margin="10,5,5,5"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0" FontSize="16" Foreground="MidnightBlue" Text="Kitap Özeti" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" Margin="10,5,5,5" />
+                                <TextBlock Grid.Row="3" Grid.Column="1" FontSize="16" Foreground="MidnightBlue" Text=" : " FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Width="10" Margin="0,5" />
+                                <TextBlock Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="5" FontSize="16" Foreground="MidnightBlue" Text="{Binding Detail}" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap"  Width="655" Margin="10,5,5,5" />
 
+                            </Grid>
 
+                        </Border>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
             </DataGrid>
 
         </Border>
@@ -113,24 +151,37 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
-            <DockPanel />
-            <DockPanel Grid.Column="1">
-                <Button x:Name="btn_AddBook" Click="btn_AddBook_Click" Height="40" Width="200" Cursor="Hand">
-                <Button.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform ScaleX="1"/>
-                        <SkewTransform/>
-                        <RotateTransform/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Button.RenderTransform>
-                <Button.Background>
-                    <ImageBrush ImageSource="/addBook.png"/>
-                </Button.Background>
-                </Button>
+            <DockPanel >
             </DockPanel>
+            <DockPanel Grid.Column="1">
+                <Image Source="/Img/addBook.png" x:Name="btn_AddBook" PreviewMouseDown="btn_AddBook_Click" Style="{DynamicResource imageButton}">
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
 
+            </DockPanel>
+            <DockPanel Grid.Column="2">
+                <Image Source="/Img/updateBook.png" x:Name="btnUpdateBook" PreviewMouseDown="btnUpdateBook_PreviewMouseDown" Style="{DynamicResource imageButton}">
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+
+            </DockPanel>
 
         </Grid>
     </Grid>

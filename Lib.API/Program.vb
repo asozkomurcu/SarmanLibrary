@@ -1,6 +1,10 @@
 Imports [Lib].Application
+Imports [Lib].Application.AutoMapper
+Imports [Lib].Application.Services.Abstraction
+Imports [Lib].Application.Services.Implementation
 Imports [Lib].Domain
 Imports [Lib].Persistence
+Imports [Lib].Persistence.Context
 Imports Microsoft.AspNetCore.Builder
 Imports Microsoft.EntityFrameworkCore
 Imports Microsoft.Extensions.Configuration
@@ -23,6 +27,8 @@ Module Program
         builder.Services.AddScoped(Of IBookService, BookService)
         builder.Services.AddScoped(Of ICategoryService, CategoryService)
         builder.Services.AddScoped(Of IPublisherService, PublisherService)
+        builder.Services.AddScoped(Of ICountryService, CountryService)
+        builder.Services.AddScoped(Of IYearService, YearService)
 
 
         builder.Services.AddScoped(GetType(IRepository(Of BaseEntity)), GetType(Repository(Of BaseEntity)))

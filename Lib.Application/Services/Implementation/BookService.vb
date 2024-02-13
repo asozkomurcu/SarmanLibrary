@@ -1,23 +1,40 @@
-﻿Imports [Lib].Domain
+﻿Imports [Lib].Application.Models.DTOs
+Imports [Lib].Application.Models.RequestModels
+Imports [Lib].Application.Models.RequestModels.BookVMs
+Imports [Lib].Application.Services.Abstraction
+Imports [Lib].Application.Wrapper
+Imports [Lib].Domain
+Imports [Lib].Persistence.Context
 
 Public Class BookService
     Implements IBookService
 
     Private ReadOnly _unitOfWork As IUnitofWork
+    Private ReadOnly _context As LibContext
 
-    Public Sub New(unitOfWork As IUnitofWork)
+
+
+    Public Sub New(unitOfWork As IUnitofWork, context As LibContext)
         _unitOfWork = unitOfWork
+        _context = context
     End Sub
 
-    Public Async Function GetAllBooks() As Task(Of Result(Of List(Of BookDTO))) Implements IBookService.GetAllBooks
-        Dim bookRepository = _unitOfWork.GetRepository(Of Book)()
-        Dim result As New Result(Of List(Of BookDTO))
+
+    Public Async Function GetSearchBooks(search As SearchVM) As Task(Of Result(Of List(Of BookDTO))) Implements IBookService.GetSearchBooks
+        Dim result = New Result(Of List(Of BookDTO))
 
         Try
-            Dim books = Await bookRepository.GetAllAsync()
+            Dim bookEntities As IQueryable(Of Book)
+            bookEntities = _context.Books.Where(Function(x) x.BookName.ToUpper.Trim.Contains(search.SearchText.ToUpper.Trim))
 
-            result.Data = books.Select(Function(book) New BookDTO With {
+
+            result.Data = bookEntities.Select(Function(book) New BookDTO With {
                 .Id = book.Id,
+                .ReleaseDateId = book.YearId,
+                .CategoryId = book.CategoryId,
+                .PublisherId = book.PublisherId,
+                .AuthorId = book.AuthorId,
+                .CountryId = book.Author.CountryId,
                 .BookName = book.BookName,
                 .AuthorFirstName = book.Author.FirstName,
                 .AuthorLastName = book.Author.LastName,
@@ -32,7 +49,41 @@ Public Class BookService
             result.Success = True
         Catch ex As Exception
             result.Success = False
-            result.Errors.Add(ex.Message)
+            result.Errors.Add("Listeleme işlemi sırasında bir hata oluştu.")
+        End Try
+        _unitOfWork.Dispose()
+        Return result
+    End Function
+
+    Public Async Function GetAllBooks() As Task(Of Result(Of List(Of BookDTO))) Implements IBookService.GetAllBooks
+        Dim bookRepository = _unitOfWork.GetRepository(Of Book)()
+        Dim result As New Result(Of List(Of BookDTO))
+
+        Try
+            Dim books = Await bookRepository.GetAllAsync()
+
+            result.Data = books.Select(Function(book) New BookDTO With {
+                .Id = book.Id,
+                .ReleaseDateId = book.YearId,
+                .CategoryId = book.CategoryId,
+                .PublisherId = book.PublisherId,
+                .AuthorId = book.AuthorId,
+                .CountryId = book.Author.CountryId,
+                .BookName = book.BookName,
+                .AuthorFirstName = book.Author.FirstName,
+                .AuthorLastName = book.Author.LastName,
+                .Page = book.Page,
+                .Detail = book.Detail,
+                .IsRead = book.IsRead,
+                .CategoryName = book.Category.Name,
+                .PublisherName = book.Publisher.Name,
+                .IntDate = book.Year.IntDate
+            }).ToList()
+
+            result.Success = True
+        Catch ex As Exception
+            result.Success = False
+            result.Errors.Add("Listeleme işlemi sırasında bir hata oluştu.")
         End Try
 
         Return result
@@ -40,7 +91,7 @@ Public Class BookService
 
     Public Function AddBook(addBookVM As AddBookVM) As Result(Of Integer) Implements IBookService.AddBook
         Dim bookRepository = _unitOfWork.GetRepository(Of Book)()
-        Dim result As New Result(Of Object)
+        Dim result As New Result(Of Integer)
 
         Try
             Dim newBook As New Book With {
@@ -59,18 +110,22 @@ Public Class BookService
             result.Success = True
         Catch ex As Exception
             result.Success = False
-            result.Errors.Add(ex.Message)
+            result.Errors.Add("Ekleme işlemi sırasında bir hata oluştu.")
         End Try
 
-        Return result.Data
+        Return result
     End Function
 
-    Public Async Function UpdateBook(updateBookVM As UpdateBookVM) As Task(Of Result(Of Integer)) Implements IBookService.UpdateBook
+    Public Function UpdateBook(updateBookVM As UpdateVM) As Result(Of Integer) Implements IBookService.UpdateBook
         Dim bookRepository = _unitOfWork.GetRepository(Of Book)()
-        Dim result As New Result(Of Object)
+        Dim yearRepository = _unitOfWork.GetRepository(Of Year)()
+        Dim result As New Result(Of Integer)
+
 
         Try
-            Dim existingBook = Await bookRepository.GetById(updateBookVM.Id)
+
+            Dim existingBook = bookRepository.GetById(updateBookVM.Id).Result
+            Dim intDateId = yearRepository.GetSingleByFilterAsync(Function(x) x.IntDate = updateBookVM.IntDate).Result
 
             If existingBook IsNot Nothing Then
                 existingBook.BookName = updateBookVM.BookName
@@ -80,27 +135,30 @@ Public Class BookService
                 existingBook.PublisherId = updateBookVM.PublisherId
                 existingBook.AuthorId = updateBookVM.AuthorId
                 existingBook.CategoryId = updateBookVM.CategoryId
+                existingBook.YearId = updateBookVM.ReleaseDateId
 
                 bookRepository.Update(existingBook)
-                Await _unitOfWork.CommitAsync()
+                _unitOfWork.CommitAsync().Wait()
                 result.Success = True
             Else
                 result.Errors.Add("Kitap bulunamadı.")
+                result.Success = False
             End If
         Catch ex As Exception
             result.Success = False
-            result.Errors.Add(ex.Message)
+            result.Errors.Add("Güncelleme işlemi sırasında bir hata oluştu.")
         End Try
 
-        Return result.Data
+        Return result
     End Function
 
-    Public Function DeleteBook(bookId As Long) As Result(Of Integer) Implements IBookService.DeleteBook
+    Public Function DeleteBook(bookId As Long) As Result(Of Boolean) Implements IBookService.DeleteBook
         Dim bookRepository = _unitOfWork.GetRepository(Of Book)()
-        Dim result As New Result(Of Object)
+
+        Dim result As New Result(Of Boolean)
 
         Try
-            Dim bookToDelete = bookRepository.GetById(bookId)
+            Dim bookToDelete = bookRepository.GetById(bookId).Result
 
             If bookToDelete IsNot Nothing Then
                 bookRepository.Delete(bookToDelete)
@@ -108,13 +166,14 @@ Public Class BookService
                 result.Success = True
             Else
                 result.Errors.Add("Kitap bulunamadı.")
+                result.Success = False
             End If
         Catch ex As Exception
             result.Success = False
-            result.Errors.Add(ex.Message)
+            result.Errors.Add("Silme işlemi sırasında bir hata oluştu.")
         End Try
 
-        Return result.Data
+        Return result
     End Function
 
     Public Async Function GetBookById(bookId As Long) As Task(Of Result(Of BookDTO)) Implements IBookService.GetBookById
@@ -127,24 +186,30 @@ Public Class BookService
             If book IsNot Nothing Then
                 result.Data = New BookDTO With {
                     .Id = book.Id,
+                    .ReleaseDateId = book.YearId,
+                    .CategoryId = book.CategoryId,
+                    .PublisherId = book.PublisherId,
+                    .AuthorId = book.AuthorId,
+                    .CountryId = book.Author.CountryId,
                     .BookName = book.BookName,
                     .AuthorFirstName = book.Author.FirstName,
                     .AuthorLastName = book.Author.LastName,
                     .Page = book.Page,
-                    .CategoryName = book.Category.Name,
                     .Detail = book.Detail,
                     .IsRead = book.IsRead,
+                    .CategoryName = book.Category.Name,
                     .PublisherName = book.Publisher.Name,
                     .IntDate = book.Year.IntDate
                 }
                 result.Success = True
             Else
                 result.Errors.Add("Kitap bulunamadı")
+                result.Success = False
             End If
 
         Catch ex As Exception
             result.Success = False
-            result.Errors.Add(ex.Message)
+            result.Errors.Add("Arama işlemi sırasında bir hata oluştu.")
         End Try
 
         Return result
@@ -159,13 +224,18 @@ Public Class BookService
 
             result.Data = books.Select(Function(book) New BookDTO With {
                 .Id = book.Id,
+                .ReleaseDateId = book.YearId,
+                .CategoryId = book.CategoryId,
+                .PublisherId = book.PublisherId,
+                .AuthorId = book.AuthorId,
+                .CountryId = book.Author.CountryId,
                 .BookName = book.BookName,
                 .AuthorFirstName = book.Author.FirstName,
                 .AuthorLastName = book.Author.LastName,
                 .Page = book.Page,
-                .CategoryName = book.Category.Name,
                 .Detail = book.Detail,
                 .IsRead = book.IsRead,
+                .CategoryName = book.Category.Name,
                 .PublisherName = book.Publisher.Name,
                 .IntDate = book.Year.IntDate
             }).ToList()
@@ -173,7 +243,7 @@ Public Class BookService
             result.Success = True
         Catch ex As Exception
             result.Success = False
-            result.Errors.Add(ex.Message)
+            result.Errors.Add("Listeleme işlemi sırasında bir hata oluştu.")
         End Try
 
         Return result
@@ -188,13 +258,18 @@ Public Class BookService
 
             result.Data = books.Select(Function(book) New BookDTO With {
                 .Id = book.Id,
+                .ReleaseDateId = book.YearId,
+                .CategoryId = book.CategoryId,
+                .PublisherId = book.PublisherId,
+                .AuthorId = book.AuthorId,
+                .CountryId = book.Author.CountryId,
                 .BookName = book.BookName,
                 .AuthorFirstName = book.Author.FirstName,
                 .AuthorLastName = book.Author.LastName,
                 .Page = book.Page,
-                .CategoryName = book.Category.Name,
                 .Detail = book.Detail,
                 .IsRead = book.IsRead,
+                .CategoryName = book.Category.Name,
                 .PublisherName = book.Publisher.Name,
                 .IntDate = book.Year.IntDate
             }).ToList()
@@ -202,7 +277,7 @@ Public Class BookService
             result.Success = True
         Catch ex As Exception
             result.Success = False
-            result.Errors.Add(ex.Message)
+            result.Errors.Add("Listeleme işlemi sırasında bir hata oluştu.")
         End Try
 
         Return result
@@ -217,13 +292,18 @@ Public Class BookService
 
             result.Data = books.Select(Function(book) New BookDTO With {
                 .Id = book.Id,
+                .ReleaseDateId = book.YearId,
+                .CategoryId = book.CategoryId,
+                .PublisherId = book.PublisherId,
+                .AuthorId = book.AuthorId,
+                .CountryId = book.Author.CountryId,
                 .BookName = book.BookName,
                 .AuthorFirstName = book.Author.FirstName,
                 .AuthorLastName = book.Author.LastName,
                 .Page = book.Page,
-                .CategoryName = book.Category.Name,
                 .Detail = book.Detail,
                 .IsRead = book.IsRead,
+                .CategoryName = book.Category.Name,
                 .PublisherName = book.Publisher.Name,
                 .IntDate = book.Year.IntDate
             }).ToList()
@@ -231,7 +311,7 @@ Public Class BookService
             result.Success = True
         Catch ex As Exception
             result.Success = False
-            result.Errors.Add(ex.Message)
+            result.Errors.Add("Listeleme işlemi sırasında bir hata oluştu.")
         End Try
 
         Return result

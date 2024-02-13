@@ -29,6 +29,42 @@
     <None Remove="Controllers\updateTheCategory.png" />
     <None Remove="Controllers\updateThePublisher.png" />
     <None Remove="fullscreen.png" />
+    <None Remove="Img\addAuthor.png" />
+    <None Remove="Img\addBook.png" />
+    <None Remove="Img\addCategory.png" />
+    <None Remove="Img\addPublisher.png" />
+    <None Remove="Img\addTheAuthor.png" />
+    <None Remove="Img\addTheBook.png" />
+    <None Remove="Img\addTheCategory.png" />
+    <None Remove="Img\addThePublisher.png" />
+    <None Remove="Img\author.png" />
+    <None Remove="Img\back.png" />
+    <None Remove="Img\book.png" />
+    <None Remove="Img\category.png" />
+    <None Remove="Img\catPawsSideBar.png" />
+    <None Remove="Img\Close.png" />
+    <None Remove="Img\fullscreen.png" />
+    <None Remove="Img\hamburgerMenu.png" />
+    <None Remove="Img\Kategoriler.png" />
+    <None Remove="Img\navbarLeft.png" />
+    <None Remove="Img\navbarRight.png" />
+    <None Remove="Img\navbarTop.png" />
+    <None Remove="Img\publisher.png" />
+    <None Remove="Img\SARMAN.png" />
+    <None Remove="Img\sağ_üst_close_button.png" />
+    <None Remove="Img\sağ_üst_minimalize_button.png" />
+    <None Remove="Img\search.png" />
+    <None Remove="Img\Tüm_Kitaplar.png" />
+    <None Remove="Img\updateAuthor.png" />
+    <None Remove="Img\updateBook.png" />
+    <None Remove="Img\updateCategory.png" />
+    <None Remove="Img\updatePublisher.png" />
+    <None Remove="Img\updateTheAuthor.png" />
+    <None Remove="Img\updateTheBook.png" />
+    <None Remove="Img\updateTheCategory.png" />
+    <None Remove="Img\updateThePublisher.png" />
+    <None Remove="Img\Yayınevleri.png" />
+    <None Remove="Img\Yazarlar.png" />
     <None Remove="Kategoriler.png" />
     <None Remove="navbarLeft.png" />
     <None Remove="navbarRight.png" />
@@ -58,46 +94,47 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DevExpress.Wpf.Core" Version="23.1.6" />
-    <PackageReference Include="DevExpress.Wpf.Themes.All" Version="23.1.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="addBook.png" />
-    <Resource Include="catPawsSideBar.png" />
-    <Resource Include="Controllers\addAuthor.png" />
-    <Resource Include="Controllers\addCategory.png" />
-    <Resource Include="Controllers\addPublisher.png" />
-    <Resource Include="Controllers\addTheAuthor.png" />
-    <Resource Include="Controllers\addTheBook.png" />
-    <Resource Include="Controllers\addTheCategory.png" />
-    <Resource Include="Controllers\author.png" />
-    <Resource Include="Controllers\book.png" />
-    <Resource Include="Controllers\category.png" />
-    <Resource Include="Controllers\catPawsSideBar.png" />
-    <Resource Include="Controllers\Close.png" />
-    <Resource Include="Controllers\updateAuthor.png" />
-    <Resource Include="Controllers\updateBook.png" />
-    <Resource Include="Controllers\updateCategory.png" />
-    <Resource Include="Controllers\updatePublisher.png" />
-    <Resource Include="Controllers\updateTheAuthor.png" />
-    <Resource Include="Controllers\updateTheCategory.png" />
-    <Resource Include="Controllers\updateThePublisher.png" />
-    <Resource Include="fullscreen.png" />
-    <Resource Include="Kategoriler.png" />
-    <Resource Include="navbarLeft.png" />
-    <Resource Include="navbarRight.png" />
-    <Resource Include="navbarTop.png" />
-    <Resource Include="SARMAN.png" />
-    <Resource Include="sağ_üst_close_button.png" />
-    <Resource Include="sağ_üst_minimalize_button.png" />
-    <Resource Include="Tüm_Kitaplar.png" />
-    <Resource Include="updateAuthor.png" />
-    <Resource Include="updateBook.png" />
-    <Resource Include="updateCategory.png" />
-    <Resource Include="updatePublisher.png" />
-    <Resource Include="Yayınevleri.png" />
-    <Resource Include="Yazarlar.png" />
+    <Resource Include="Img\addAuthor.png" />
+    <Resource Include="Img\addBook.png" />
+    <Resource Include="Img\addCategory.png" />
+    <Resource Include="Img\addPublisher.png" />
+    <Resource Include="Img\addTheAuthor.png" />
+    <Resource Include="Img\addTheBook.png" />
+    <Resource Include="Img\addTheCategory.png" />
+    <Resource Include="Img\addThePublisher.png" />
+    <Resource Include="Img\author.png" />
+    <Resource Include="Img\back.png" />
+    <Resource Include="Img\book.png" />
+    <Resource Include="Img\category.png" />
+    <Resource Include="Img\catPawsSideBar.png" />
+    <Resource Include="Img\Close.png" />
+    <Resource Include="Img\fullscreen.png" />
+    <Resource Include="Img\hamburgerMenu.png" />
+    <Resource Include="Img\Kategoriler.png" />
+    <Resource Include="Img\navbarLeft.png" />
+    <Resource Include="Img\navbarRight.png" />
+    <Resource Include="Img\navbarTop.png" />
+    <Resource Include="Img\publisher.png" />
+    <Resource Include="Img\SARMAN.png" />
+    <Resource Include="Img\sağ_üst_close_button.png" />
+    <Resource Include="Img\sağ_üst_minimalize_button.png" />
+    <Resource Include="Img\search.png" />
+    <Resource Include="Img\Tüm_Kitaplar.png" />
+    <Resource Include="Img\updateAuthor.png" />
+    <Resource Include="Img\updateBook.png" />
+    <Resource Include="Img\updateCategory.png" />
+    <Resource Include="Img\updatePublisher.png" />
+    <Resource Include="Img\updateTheAuthor.png" />
+    <Resource Include="Img\updateTheBook.png" />
+    <Resource Include="Img\updateTheCategory.png" />
+    <Resource Include="Img\updateThePublisher.png" />
+    <Resource Include="Img\Yayınevleri.png" />
+    <Resource Include="Img\Yazarlar.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,9 @@
-﻿Imports [Lib].Domain
+﻿Imports [Lib].Application.Models.DTOs
+Imports [Lib].Application.Models.RequestModels
+Imports [Lib].Application.Models.RequestModels.CategoryVMs
+Imports [Lib].Application.Services.Abstraction
+Imports [Lib].Application.Wrapper
+Imports [Lib].Domain
 
 Public Class CategoryService
     Implements ICategoryService
@@ -24,7 +29,7 @@ Public Class CategoryService
             result.Success = True
         Catch ex As Exception
             result.Success = False
-            result.Errors.Add(ex.Message)
+            result.Errors.Add("Listeleme işlemi sırasında bir hata oluştu.")
         End Try
 
         Return result
@@ -45,10 +50,11 @@ Public Class CategoryService
                 result.Success = True
             Else
                 result.Errors.Add("Kategori bulunamadı.")
+                result.Success = False
             End If
         Catch ex As Exception
             result.Success = False
-            result.Errors.Add(ex.Message)
+            result.Errors.Add("Arama işlemi sırasında bir hata oluştu.")
         End Try
 
         Return result
@@ -56,7 +62,7 @@ Public Class CategoryService
 
     Public Function CreateCategory(createCategoryVM As CreateCategoryVM) As Result(Of Integer) Implements ICategoryService.CreateCategory
         Dim categoryRepository = _unitOfWork.GetRepository(Of Category)()
-        Dim result As New Result(Of Object)
+        Dim result As New Result(Of Integer)
 
         Try
             Dim newCategory As New Category With {
@@ -68,15 +74,15 @@ Public Class CategoryService
             result.Success = True
         Catch ex As Exception
             result.Success = False
-            result.Errors.Add(ex.Message)
+            result.Errors.Add("Ekleme işlemi sırasında bir hata oluştu.")
         End Try
 
-        Return result.Data
+        Return result
     End Function
 
-    Public Function UpdateCategory(updateCategoryVM As UpdateCategoryVM) As Result(Of Integer) Implements ICategoryService.UpdateCategory
+    Public Function UpdateCategory(updateCategoryVM As UpdateVM) As Result(Of Integer) Implements ICategoryService.UpdateCategory
         Dim categoryRepository = _unitOfWork.GetRepository(Of Category)()
-        Dim result As New Result(Of Object)
+        Dim result As New Result(Of Integer)
 
         Try
             Dim existingCategory = categoryRepository.GetById(updateCategoryVM.Id).Result
@@ -89,18 +95,20 @@ Public Class CategoryService
                 result.Success = True
             Else
                 result.Errors.Add("Kategori bulunamadı.")
+                result.Success = False
             End If
         Catch ex As Exception
             result.Success = False
-            result.Errors.Add(ex.Message)
+            result.Errors.Add("Güncelleme işlemi sırasında bir hata oluştu.")
         End Try
 
-        Return result.Data
+        Return result
     End Function
 
-    Public Function DeleteCategory(categoryId As Long) As Result(Of Integer) Implements ICategoryService.DeleteCategory
+    Public Function DeleteCategory(categoryId As Long) As Result(Of Boolean) Implements ICategoryService.DeleteCategory
         Dim categoryRepository = _unitOfWork.GetRepository(Of Category)()
-        Dim result As New Result(Of Object)
+
+        Dim result As New Result(Of Boolean)
 
         Try
             Dim categoryToDelete = categoryRepository.GetById(categoryId).Result
@@ -111,12 +119,13 @@ Public Class CategoryService
                 result.Success = True
             Else
                 result.Errors.Add("Kategori bulunamadı.")
+                result.Success = False
             End If
         Catch ex As Exception
             result.Success = False
-            result.Errors.Add(ex.Message)
+            result.Errors.Add("Silme işlemi sırasında bir hata oluştu.")
         End Try
 
-        Return result.Data
+        Return result
     End Function
 End Class

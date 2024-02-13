@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SarmanLibrary.UI" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:local="clr-namespace:Library.UI" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         mc:Ignorable="d"
         Title="AddCategory" Height="292" Width="700" AllowsTransparency="True" WindowStyle="None" Background="Transparent" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,0,250">
@@ -28,16 +28,24 @@
                         <Label Content="Kategori Adı :" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontFamily="Comic Sans MS" Foreground="#FF37251C" FontWeight="Bold" Background="#FFF9F9F9" />
                     </Border>
                     <Border Grid.Column="1" Grid.Row="0">
-                        <TextBox TextWrapping="Wrap" FontFamily="Comic Sans MS" Text="" BorderBrush="#f0e9d9" Background="#99F9F9F9" FontSize="14"/>
+                        <TextBox x:Name="tbxCategoryName" TextWrapping="Wrap" Background="#99F9F9F9" FontFamily="Comic Sans MS" BorderThickness="0"
+        FontSize="20" Foreground="#FF37251C" FontWeight="Bold" Padding="2" VerticalAlignment="Center"
+         Text="{Binding Name, Mode=TwoWay}" />
                     </Border>
-                    <Button x:Name="windowClose" Click="windowClose_Click" Grid.Column="0" Grid.Row="8" Margin="10,10,10,10" BorderBrush="#00ABABAB" Cursor="Hand">
+                    <Image Grid.Column="0" Grid.Row="8" Margin="10,10,10,10" x:Name="CloseWindow" Source="/Img/Close.png" Cursor="Hand" MouseDown="windowClose_Click" Style="{DynamicResource imageButton}">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1"/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                    <Button Grid.Column="1" Grid.Row="1" Margin="0,0,20,10" Width="200" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding AddCategoryCommand}"  Click="Button_Click" BorderBrush="#00ABABAB"  Cursor="Hand">
+
                         <Button.Background>
-                            <ImageBrush ImageSource="/Controllers/Close.png"/>
-                        </Button.Background>
-                    </Button>
-                    <Button Grid.Column="1" Grid.Row="1" Margin="0,0,20,10" Width="200" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#00ABABAB"  Cursor="Hand">
-                        <Button.Background>
-                            <ImageBrush ImageSource="/Controllers/addTheCategory.png"/>
+                            <ImageBrush ImageSource="/Img/addTheCategory.png"/>
                         </Button.Background>
 
                     </Button>
@@ -48,7 +56,7 @@
                     <DropShadowEffect/>
                 </Ellipse.Effect>
                 <Ellipse.Fill>
-                    <ImageBrush ImageSource="/Controllers/category.png"/>
+                    <ImageBrush ImageSource="/Img/category.png"/>
                 </Ellipse.Fill>
 
             </Ellipse>

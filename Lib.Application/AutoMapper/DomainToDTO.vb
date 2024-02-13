@@ -1,4 +1,5 @@
 ﻿Imports AutoMapper
+Imports [Lib].Application.Models.DTOs
 Imports [Lib].Domain
 
 Public Class DomainToDTO

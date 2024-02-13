@@ -1,5 +1,6 @@
 ﻿Imports System.Net.Http
 Imports System.Text.Json
+Imports Library.UI.Models.Wrapper
 
 Public Class HttpConnection(Of T As New)
 

@@ -3,42 +3,160 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SarmanLibrary.UI"
-             mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="700">
+                      xmlns:uı="clr-namespace:Library.UI"
+         xmlns:service="clr-namespace:Library.UI.Services.Implementation"
+         mc:Ignorable="d" 
+         d:DesignHeight="400" d:DesignWidth="700"
+xmlns:System="clr-namespace:System;assembly=System.Runtime">
+
+    <UserControl.Resources>
+        <System:Boolean x:Key="ButtonOverridesDefaultStyle1">False</System:Boolean>
+    </UserControl.Resources>
+
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
-        </Grid.RowDefinitions>
-        
-        <Border  Grid.Row="0">
-            <DataGrid BorderBrush="{x:Null}" BorderThickness="0"/>
-        </Border>
-        <Grid Grid.Row="1" Background="#f9f9f9">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <DockPanel />
-            <DockPanel Grid.Column="1">
-                <Button x:Name="AddAuthor" Click="AddAuthor_Click" Height="40" Width="200" Cursor="Hand">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/Controllers/addAuthor.png"/>
-                    </Button.Background>
-                    <Button.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleX="1"/>
-                            <SkewTransform/>
-                            <RotateTransform/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </Button.RenderTransform>
-                    
-                </Button>
-            </DockPanel>
+        <Frame x:Name="AuthorsFrame"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
 
+            <Border  Grid.Row="0">
 
+                <Grid>
+                    <ListView x:Name="lstAuthors" ItemsSource="{Binding AllAuthorsList}" SelectionMode="Single" FontFamily="Comic Sans MS" FontSize="16" FontWeight="Bold"
+                              Background="Transparent" BorderBrush="Transparent">
+
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="0">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Right" Text="{Binding Id}" Visibility="Hidden"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="0">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Right" Text="{Binding BirthDateId}" Visibility="Hidden"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="0">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Right" Text="{Binding CountryId}" Visibility="Hidden"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Adı" Width="180">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Right" Text="{Binding FirstName}"  />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Soyadı" Width="170">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Right" Text="{Binding LastName}"  />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Doğum Tarihi" Width="120">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Right" Text="{Binding IntDate}"  />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Ülke" Width="230">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Right" Text="{Binding CountryName}"  />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn  Width="120">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Label x:Name="lblAuthorBookList" Content="Kitap Listesi" Style="{DynamicResource ListLabelButton}" Width="120" PreviewMouseDown="lblAuthorBookList_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn >
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Label x:Name="DeleteAuthor"  PreviewMouseDown="DeleteAuthor_PreviewMouseDown"
+                                                  Width="60"
+                                                  VerticalAlignment="Center"
+                                                  Background="#f15662"
+                                                  BorderThickness="0"
+                                                  Content="Sil"
+                                                  Foreground="White" 
+                                                  Padding="20,0,0,0"
+                                                  Cursor="Hand">
+                                                <Label.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1"/>
+                                                        <SkewTransform/>
+                                                        <RotateTransform/>
+                                                        <TranslateTransform/>
+                                                    </TransformGroup>
+                                                </Label.RenderTransform>
+
+                                            </Label>
+                                        </DataTemplate>
+
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+
+            </Border>
+            <Grid Grid.Row="1" Background="#f9f9f9">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+                <DockPanel Grid.Column="1">
+                    <Image x:Name="AddAuthor" Source="/Img/addAuthor.png"  MouseDown="AddAuthor_Click" Style="{DynamicResource imageButton}">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1"/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                </DockPanel>
+                <DockPanel Grid.Column="2">
+                    <Image Source="/Img/updateAuthor.png" x:Name="btnUpdateAuthor" PreviewMouseDown="btnUpdateAuthor_PreviewMouseDown" Style="{DynamicResource imageButton}">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1"/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+
+                </DockPanel>
+
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
