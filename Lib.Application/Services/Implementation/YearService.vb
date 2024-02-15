@@ -44,15 +44,18 @@ Public Class YearService
         Dim years As IQueryable(Of Year)
         Dim CenturyIndex As Integer
         Dim CenturyIndex1 As Integer
+        Dim CenturyIndex2 As Integer = DateTime.Now.Year
+        dim Century As Integer = CenturyIndex2 / 100 + 1
+
         Try
             If yearVM.MOMS = "MO" Then
                 CenturyIndex = yearVM.Century * -100
                 CenturyIndex1 = CenturyIndex + 99
                 years = _context.Year.OrderByDescending(Function(x) x.Id).Where(Function(x) CenturyIndex <= x.IntDate And x.IntDate <= CenturyIndex1)
-            ElseIf yearVM.Century = 21 Then
+            ElseIf yearVM.Century = Century Then
                 CenturyIndex = yearVM.Century * 100
                 CenturyIndex1 = CenturyIndex - 99
-                Dim CenturyIndex2 As Integer = DateTime.Now.Year
+                
                 years = _context.Year.OrderBy(Function(x) x.Id).Where(Function(x) CenturyIndex1 <= x.IntDate And x.IntDate <= CenturyIndex2)
             Else
                 CenturyIndex = yearVM.Century * 100
